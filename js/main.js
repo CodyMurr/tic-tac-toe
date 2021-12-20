@@ -1,82 +1,64 @@
-const lookup = {
-    '1': 'purple',
-    '-1': 'lime',
-    'null': 'white'
-  };
-  
-  const winningCombos = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-  ];
-  
-  /*----- app's state (variables) -----*/
-  let board, turn, winner;
-  
-  /*----- cached element references -----*/
-  const squares = document.querySelectorAll('td div');
-  const message = document.querySelector('h1');
-  
-  /*----- event listeners -----*/
-  document.querySelector('table').addEventListener('click', handleMove);
-  document.querySelector('button').addEventListener('click', initialize);
-  
-  /*----- functions -----*/
-  
-  initialize();
-  
-  function handleMove(evt) {
-    // obtain index of square
-    const idx = parseInt(evt.target.id.replace('sq', ''));
-    // check if square is available and return if not
-    if (board[idx] || winner) return;
-    // update state (board, turn, winner)
-    board[idx] = turn;
+const players = {
+    1: 'blue',
+    '-1': 'red',
+    'null': 'white' 
+}
+
+const winConditions = [
+    [0, 1, 2], [3, 4 ,5], [6, 7, 8],
+    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+    [0, 4, 8], [2, 4, 6]
+];
+
+let board, turn, winner;
+
+const squares = document.querySelectorAll('#board > div');
+const message = document.querySelector('h3');
+
+document.querySelector('#board').addEventListener("click", handleMove);
+document.querySelector('button').addEventListener("click", init);
+
+init();
+
+
+
+function handleMove(e) {
+    const index = parseInt(e.target.id.replace('sq', ''));
+    if (board[index] || winner) return;
+    board[index] = turn;
     turn *= -1;
     winner = getWinner();
     render();
-  }
-  
-  function getWinner() {
-    for (let i = 0; i < winningCombos.length; i++) {
-      if (Math.abs(board[winningCombos[i][0]] + board[winningCombos[i][1]] + board[winningCombos[i][2]]) === 3) return board[winningCombos[i][0]];
+}
+
+function getWinner() {
+    for (let i = 0; i < winConditions.length; i++) {
+        let cond = winConditions[i]
+        if (Math.abs(board[cond[0]] + board[cond[1]] + board[cond[2]]) === 3) return board[cond[0]];
     }
-    // Less elegant approach:
-    // if (Math.abs(board[0] + board[1] + board[2]) === 3) return board[0];
-    // if (Math.abs(board[3] + board[4] + board[5]) === 3) return board[3];
-    // if (Math.abs(board[6] + board[7] + board[8]) === 3) return board[6];
-    // if (Math.abs(board[0] + board[3] + board[6]) === 3) return board[0];
-    // if (Math.abs(board[1] + board[4] + board[7]) === 3) return board[1];
-    // if (Math.abs(board[2] + board[5] + board[8]) === 3) return board[2];
-    // if (Math.abs(board[0] + board[4] + board[8]) === 3) return board[0];
-    // if (Math.abs(board[2] + board[4] + board[6]) === 3) return board[2];
     if (board.includes(null)) return null;
-    return 'T';
-  }
-  
-  function render() {
-    board.forEach(function(sq, idx) {
-      squares[idx].style.background = lookup[sq];
+    return "T";
+}
+
+function render() {
+    board.forEach((sq, idx) => {
+        squares[idx].style.background = players[sq];
     });
-    if (winner === 'T') {
-      message.innerHTML = 'Rats, another tie!';
+    if (winner === "T") {
+        message.innerHTML = "Tie Game!";
     } else if (winner) {
-      message.innerHTML = `Congrats ${lookup[winner].toUpperCase()}!`;
+        message.innerHTML = `<span style="color: ${players[winner]}">${players[winner].toUpperCase()}</span> Wins!`;
     } else {
-      message.innerHTML = `${lookup[turn].toUpperCase()}'s Turn`;
+        message.innerHTML = `<span style="color: ${players[turn]}">${players[turn].toUpperCase()}'s</span> Turn`;
     }
-  }
-  
-  function initialize() {
-    board = [null, null, null, null, null, null, null, null, null];
-    // OR initialize like this:
-    // board = new Array(9).fill(null);
+}
+
+function init() {
+    board = [null, null, null,
+             null, null, null, 
+             null, null, null       
+    ];
     turn = 1;
     winner = null;
     render();
-  }
+}

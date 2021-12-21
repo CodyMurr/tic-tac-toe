@@ -12,8 +12,9 @@ const winConditions = [
 
 let board, turn, winner;
 
-const squares = [...document.querySelectorAll('#board > div')];
+const squares = [...document.querySelectorAll('#board > div > .square')];
 const message = document.querySelector('h3');
+
 
 document.querySelector('#board').addEventListener("click", handleMove);
 document.querySelector('button').addEventListener("click", init);

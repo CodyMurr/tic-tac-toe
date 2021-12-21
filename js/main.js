@@ -1,6 +1,6 @@
 const players = {
-    1: 'blue',
-    '-1': 'red',
+    1: 'red',
+    '-1': 'blue',
     'null': 'white' 
 }
 
@@ -12,7 +12,7 @@ const winConditions = [
 
 let board, turn, winner;
 
-const squares = document.querySelectorAll('#board > div');
+const squares = [...document.querySelectorAll('#board > div')];
 const message = document.querySelector('h3');
 
 document.querySelector('#board').addEventListener("click", handleMove);
@@ -23,7 +23,7 @@ init();
 
 
 function handleMove(e) {
-    const index = parseInt(e.target.id.replace('sq', ''));
+    const index = squares.indexOf(e.target);
     if (board[index] || winner) return;
     board[index] = turn;
     turn *= -1;
@@ -42,14 +42,14 @@ function getWinner() {
 
 function render() {
     board.forEach((sq, idx) => {
-        squares[idx].style.background = players[sq];
+        squares[idx].style.backgroundColor = players[sq];
     });
     if (winner === "T") {
         message.innerHTML = "Tie Game!";
     } else if (winner) {
-        message.innerHTML = `<span style="color: ${players[winner]}">${players[winner].toUpperCase()}</span> Wins!`;
+        message.innerHTML = `${players[winner].toUpperCase()} Wins!`;
     } else {
-        message.innerHTML = `<span style="color: ${players[turn]}">${players[turn].toUpperCase()}'s</span> Turn`;
+        message.innerHTML = `${players[turn].toUpperCase()}'s Turn`;
     }
 }
 

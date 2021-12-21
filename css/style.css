@@ -36,6 +36,13 @@ button {
     margin-top: 3vmin;
 }
 
+.square {
+    width: 75%;
+    height: 75%;
+    cursor: pointer;
+   
+}
+
 #board {
     width: 100vmin;
     height: 100vmin;
@@ -48,10 +55,11 @@ button {
 #board div {
     width: 30vmin;
     height: 25vmin;
-    cursor: pointer;
     margin: 1vmin;
     border-radius: 2vmin;
     background-color: #fff;
-    
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 

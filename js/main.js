@@ -26,6 +26,7 @@ init();
 function handleMove(e) {
     const index = squares.indexOf(e.target);
     if (board[index] || winner) return;
+    if (index === -1) return;
     board[index] = turn;
     turn *= -1;
     winner = getWinner();
@@ -48,9 +49,9 @@ function render() {
     if (winner === "T") {
         message.innerHTML = "Tie Game!";
     } else if (winner) {
-        message.innerHTML = `${players[winner].toUpperCase()} Wins!`;
+        message.innerHTML = `<span style="color: ${players[winner]}">${players[winner].toUpperCase()}</span> Wins!`;
     } else {
-        message.innerHTML = `${players[turn].toUpperCase()}'s Turn`;
+        message.innerHTML = `<span style="color: ${players[turn]}">${players[turn].toUpperCase()}'s</span> Turn`;
     }
 }
 
